@@ -13,6 +13,6 @@ router.get('/profile', userController.getProfile);
 router.put('/profile', userController.updateProfile);
 
 // Delete user account
-router.delete('/account', userController.deleteAccount);
+router.delete('/profile', userController.deleteAccount);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 // Database configuration
 module.exports = {
-  url: process.env.DATABASE_URL || "postgres://postgres:postgres@localhost:5432/users_db",
+  url: process.env.DATABASE_URL || "postgres://postgres:postgres@db:5432/angular_db",
   dialect: "postgres",
   pool: {
     max: 5,
