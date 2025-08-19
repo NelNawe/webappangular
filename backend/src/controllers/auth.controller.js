@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: user.id },
-      process.env.JWT_SECRET || 'your_jwt_secret_key_change_in_production',
+      process.env.JWT_SECRET || 'cours-angular',
       { expiresIn: 86400 } // 24 hours
     );
     

@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
   
   // Verify the token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key_change_in_production');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'cours-angular');
     req.userId = decoded.id;
     next();
   } catch (err) {
