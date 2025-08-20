@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,7 +36,17 @@ export class LoginComponent {
       return;
     }
 
-    console.log('Login form submitted:', this.loginForm.value);
-    this.router.navigate(['/home']);
+    const { email, password } = this.loginForm.value;
+    this.authService.login({ email, password }).subscribe({
+      next: () => {
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        this.errorMessage = error.message || 'Login failed';
+      }
+    });
+
+    // console.log('Login form submitted:', this.loginForm.value);
+    // this.router.navigate(['/home']);
   }
 }
