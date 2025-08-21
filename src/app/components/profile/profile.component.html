@@ -1,0 +1,72 @@
+<div class="profile-container">
+    <h2>My Profile</h2>
+
+    <!-- Display User Profile data -->
+    <div class="card">
+        <div class="row">
+            <div class="label">Name : </div>
+            <div class="value">{{profile.name}}</div>
+        </div>
+        <div class="row">
+            <div class="label">Email : </div>
+            <div class="value">{{profile.email}}</div>
+        </div>
+        <div class="actions">
+            <button class="btn primary">Update</button>
+            <button class="btn danger">Delete</button>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="showUpdate">
+    <div class="modal">
+        <div class="modal-header">
+        <h3>Update Profile</h3>
+        <button class="icon" aria-label="Close" (click)="closeUpdate()">✕</button>
+        </div>
+        <form [formGroup]="updateForm" (ngSubmit)="submitUpdate()" class="modal-body">
+        <label>
+            <span>Name</span>
+            <input type="text" formControlName="name" />
+        </label>
+        <div class="error" *ngIf="updateForm.get('name')?.invalid && updateForm.get('name')?.touched">
+            Name is required
+        </div>
+
+        <label>
+            <span>Email</span>
+            <input type="email" formControlName="email" />
+        </label>
+        <div class="error" *ngIf="updateForm.get('email')?.invalid && updateForm.get('email')?.touched">
+            Valid email is required
+        </div>
+
+        <label>
+            <span>New Password (optional)</span>
+            <input type="password" formControlName="password" />
+        </label>
+
+        <div class="modal-actions">
+            <button type="button" class="btn" (click)="closeUpdate()">Cancel</button>
+            <button type="submit" class="btn primary" [disabled]="updateForm.invalid || saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <div class="modal-backdrop" *ngIf="showDeleteConfirm">
+    <div class="modal">
+        <div class="modal-header">
+        <h3>Delete Account</h3>
+        <button class="icon" aria-label="Close" (click)="closeDeleteConfirm()">✕</button>
+        </div>
+        <div class="modal-body">
+        <p>Are you sure you want to permanently delete your account?</p>
+        <div class="modal-actions">
+            <button class="btn" (click)="closeDeleteConfirm()">Cancel</button>
+            <button class="btn danger" (click)="confirmDelete()" [disabled]="deleting">{{ deleting ? 'Deleting...' : 'Delete' }}</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+</div>
