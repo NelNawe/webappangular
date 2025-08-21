@@ -7,8 +7,16 @@
             <ul>
                 <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
                 <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-                <li><a routerLink="/register" routerLinkActive="active">Register</a></li>
-                <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+
+                <ng-container *ngIf="(!isAuthenticated$ | async); else authed">
+                    <li><a routerLink="/register" routerLinkActive="active">Register</a></li>
+                    <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+                </ng-container>
+
+                <ng-template #authed>
+                    <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+                    <li><a (click)="logout()">Logout</a></li>
+                </ng-template>
             </ul>
         </nav>
     </div>
