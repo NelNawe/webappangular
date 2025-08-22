@@ -5,23 +5,23 @@
     <div class="card">
         <div class="row">
             <div class="label">Name : </div>
-            <div class="value">{{profile.name}}</div>
+            <div class="value">{{profile?.name}}</div>
         </div>
         <div class="row">
             <div class="label">Email : </div>
-            <div class="value">{{profile.email}}</div>
+            <div class="value">{{profile?.email}}</div>
         </div>
         <div class="actions">
-            <button class="btn primary">Update</button>
-            <button class="btn danger">Delete</button>
+            <button class="btn primary" (click)="openUpdateModal()">Update</button>
+            <button class="btn danger" (click)="openDeleteModal()">Delete</button>
         </div>
     </div>
 
-    <div class="modal-backdrop" *ngIf="showUpdate">
+    <div class="modal-backdrop" *ngIf="showUpdateModal">
     <div class="modal">
         <div class="modal-header">
         <h3>Update Profile</h3>
-        <button class="icon" aria-label="Close" (click)="closeUpdate()">✕</button>
+        <button class="icon" aria-label="Close" (click)="closeUpdateModal()">✕</button>
         </div>
         <form [formGroup]="updateForm" (ngSubmit)="submitUpdate()" class="modal-body">
         <label>
@@ -46,24 +46,24 @@
         </label>
 
         <div class="modal-actions">
-            <button type="button" class="btn" (click)="closeUpdate()">Cancel</button>
-            <button type="submit" class="btn primary" [disabled]="updateForm.invalid || saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+            <button type="button" class="btn" (click)="closeUpdateModal()">Cancel</button>
+            <button type="submit" class="btn primary">'Save'</button>
         </div>
         </form>
     </div>
     </div>
 
-    <div class="modal-backdrop" *ngIf="showDeleteConfirm">
+    <div class="modal-backdrop" *ngIf="showDeleteModal">
     <div class="modal">
         <div class="modal-header">
         <h3>Delete Account</h3>
-        <button class="icon" aria-label="Close" (click)="closeDeleteConfirm()">✕</button>
+        <button class="icon" aria-label="Close" (click)="closeDeleteModal()">✕</button>
         </div>
         <div class="modal-body">
         <p>Are you sure you want to permanently delete your account?</p>
         <div class="modal-actions">
-            <button class="btn" (click)="closeDeleteConfirm()">Cancel</button>
-            <button class="btn danger" (click)="confirmDelete()" [disabled]="deleting">{{ deleting ? 'Deleting...' : 'Delete' }}</button>
+            <button class="btn" (click)="closeDeleteModal()">Cancel</button>
+            <button class="btn danger" (click)="confirmDelete()">'Delete'</button>
         </div>
         </div>
     </div>
