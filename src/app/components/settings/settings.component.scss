@@ -1,0 +1,41 @@
+section.settings {
+  padding: 1.5rem;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+
+  .theme-options {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toggle {
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+    }
+  }
+
+  .preview {
+    margin-top: 1rem;
+
+    .preview-card {
+      padding: 1rem;
+    }
+  }
+}

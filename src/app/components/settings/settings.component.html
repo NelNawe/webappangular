@@ -1,0 +1,30 @@
+<section class="settings">
+  <h1>Paramètres</h1>
+
+  <div class="card app-surface">
+    <h2>Thème</h2>
+    <p>Choisissez le mode d'affichage de l'application.</p>
+
+    <div class="theme-options">
+      <label class="option">
+        <input type="radio" name="theme" value="light" [checked]="currentTheme === 'light'" (change)="onThemeChange('light')" />
+        <span>Mode clair</span>
+      </label>
+
+      <label class="option">
+        <input type="radio" name="theme" value="dark" [checked]="currentTheme === 'dark'" (change)="onThemeChange('dark')" />
+        <span>Mode sombre</span>
+      </label>
+
+      <button class="toggle" (click)="toggleTheme()">Basculer</button>
+    </div>
+
+    <div class="preview">
+      <div class="preview-card app-surface">
+        <h3>Aperçu</h3>
+        <p>Ceci est un aperçu du thème « {{ currentTheme }} ».</p>
+        <a class="link" href="#">Lien d'exemple</a>
+      </div>
+    </div>
+  </div>
+</section>

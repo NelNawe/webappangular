@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_ENDPOINTS } from '../config/api.config';
 import { Observable, tap } from 'rxjs';
 import { TokenService } from './token.service';
+import { UserContextService, User } from './user-context.service';
 
 export interface RegisterPayload {
   name: string;
@@ -17,11 +18,7 @@ export interface LoginPayload {
 
 export interface AuthResponse {
   token?: string;
-  user?: {
-    id?: string;
-    name?: string;
-    email?: string;
-  }
+  user?: User;
 }
 
 @Injectable({
@@ -30,7 +27,8 @@ export interface AuthResponse {
 export class AuthService {
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private userContextService: UserContextService
   ) {}
 
   register(payload: RegisterPayload): Observable<AuthResponse> {
@@ -38,6 +36,9 @@ export class AuthService {
       .pipe(tap((res) => {
         if (res?.token) {
           this.tokenService.setToken(res.token);
+        }
+        if (res?.user) {
+          this.userContextService.setUser(res.user);
         }
       }));
   }
@@ -48,6 +49,9 @@ export class AuthService {
         if (res?.token) {
           this.tokenService.setToken(res.token);
         }
+        if (res?.user) {
+          this.userContextService.setUser(res.user);
+        }
       }));
   }
 
@@ -57,6 +61,7 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clearToken();
+    this.userContextService.clearUser();
   }
 
   isAuthenticated(): boolean {

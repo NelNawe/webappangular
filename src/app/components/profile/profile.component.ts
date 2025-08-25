@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserProfile, UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { UserContextService, User } from '../../services/user-context.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -12,13 +14,21 @@ import { CommonModule } from '@angular/common';
   styleUrls: [`./profile.component.scss`],
   imports: [CommonModule, ReactiveFormsModule]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   profile: UserProfile | null = null;
   showUpdateModal = false;
   showDeleteModal = false;
   updateForm: FormGroup;
+  currentUser: User | null = null;
+  private userSubscription!: Subscription;
 
-  constructor(private userService: UserService, private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
+  constructor(
+    private userService: UserService, 
+    private authService: AuthService, 
+    private userContextService: UserContextService,
+    private router: Router, 
+    private formBuilder: FormBuilder
+  ) {
     this.updateForm = this.formBuilder.group({
       name: [''],
       email: ['', [Validators.email]],
@@ -27,15 +37,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // S'abonner aux changements de l'utilisateur connecté
+    this.userSubscription = this.userContextService.currentUser$.subscribe(
+      user => this.currentUser = user
+    );
+    
     this.loadProfile();
   }
 
   loadProfile(): void {
     this.userService.getProfile().subscribe({
-      next: (user) => {
+      next: (user: UserProfile) => {
         this.profile = user;
       },
-      error: (err) => {
+      error: (err: any) => {
         this.profile = null;
         console.error('Error loading profile:', err);
       }
@@ -48,11 +63,18 @@ export class ProfileComponent implements OnInit {
     }
     const UserData = this.updateForm.value;
     this.userService.updateProfile(UserData).subscribe({
-      next: (updatedUser) => {
+      next: (updatedUser: UserProfile) => {
         this.profile = updatedUser;
+        
+        // Mettre à jour le contexte utilisateur avec les nouvelles informations
+        this.userContextService.updateUser({
+          name: updatedUser.name,
+          email: updatedUser.email
+        });
+        
         this.closeUpdateModal();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error updating profile:', err);
       }
     });
@@ -66,7 +88,7 @@ export class ProfileComponent implements OnInit {
         this.profile = null;
         this.router.navigate(['/login']);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error deleting profile:', err);
       }
     });
@@ -78,7 +100,7 @@ export class ProfileComponent implements OnInit {
         name: this.profile.name || '',
         email: this.profile.email || '',
         password: ''
-      })
+      });
     }
     this.showUpdateModal = true;
   }
@@ -96,4 +118,9 @@ export class ProfileComponent implements OnInit {
     this.showDeleteModal = false;
   }
 
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
 }

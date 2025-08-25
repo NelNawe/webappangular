@@ -5,3 +5,40 @@
   box-sizing: border-box;
   font-family:Verdana, Geneva, Tahoma, sans-serif
 }
+
+/* Theme variables */
+:root.theme-light {
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --surface: #f8fafc;
+  --border: #e2e8f0;
+  --primary: #3b82f6;
+  --accent: #22c55e;
+}
+
+:root.theme-dark {
+  --bg: #0b1020;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --surface: #0f172a;
+  --border: #1f2937;
+  --primary: #60a5fa;
+  --accent: #34d399;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Helpers */
+.app-surface {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.link {
+  color: var(--primary);
+}

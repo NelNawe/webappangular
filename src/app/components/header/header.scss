@@ -1,6 +1,6 @@
 .header {
-  background: #1e1e2f;
-  color: #fff;
+  background: var(--surface);
+  color: var(--text);
   padding: 1rem 2rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 
@@ -16,12 +16,12 @@
     a {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #fff;
+      color: var(--text);
       text-decoration: none;
       transition: color 0.3s ease;
 
       &:hover {
-        color: #ff6f61;
+        color: var(--primary);
       }
     }
   }
@@ -36,13 +36,21 @@
 
       li {
         a {
-          color: #fff;
+          color: var(--text);
           text-decoration: none;
           font-size: 1rem;
           transition: color 0.3s ease;
 
           &:hover {
-            color: #ff6f61;
+            color: var(--primary);
+          }
+        }
+
+        &.user-info {
+          span {
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
           }
         }
       }
