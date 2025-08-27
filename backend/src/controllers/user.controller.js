@@ -84,3 +84,34 @@ exports.deleteAccount = async (req, res) => {
     res.status(500).json({ message: error.message || "Error occurred while deleting user account" });
   }
 };
+
+// Get all users (for admin purposes)
+exports.getAllUsers = async (req, res) => {
+  try {
+    console.log('getAllUsers called, req.userId:', req.userId);
+    console.log('User model:', User);
+    
+    const users = await User.findAll({
+      attributes: { exclude: ['password'] }, // Exclude passwords for security
+      order: [['createdAt', 'DESC']] // Show newest users first
+    });
+    
+    console.log('Users found:', users.length);
+    console.log('Users data:', users);
+    
+    // Map users to ensure all required fields are present
+    const mappedUsers = users.map(user => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role || 'Utilisateur',
+      createdAt: user.createdAt || new Date(),
+      updatedAt: user.updatedAt || new Date()
+    }));
+    
+    res.status(200).json(mappedUsers);
+  } catch (error) {
+    console.error('Error in getAllUsers:', error);
+    res.status(500).json({ message: error.message || "Error occurred while retrieving users" });
+  }
+};

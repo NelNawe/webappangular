@@ -6,6 +6,9 @@ const { verifyToken } = require('../middleware/auth.middleware');
 // Apply authentication middleware to all routes
 router.use(verifyToken);
 
+// Get all users (for admin purposes)
+router.get('/all', userController.getAllUsers);
+
 // Get user profile
 router.get('/profile', userController.getProfile);
 

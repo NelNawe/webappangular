@@ -7,6 +7,7 @@ export const API_ENDPOINTS = {
     logout: `${API_BASE_URL}/auth/logout`
   },
   user: {
-    profile: `${API_BASE_URL}/users/profile`
+    profile: `${API_BASE_URL}/users/profile`,
+    all: `${API_BASE_URL}/users/all`
   }
 }

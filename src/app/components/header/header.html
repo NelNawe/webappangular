@@ -1,27 +1,150 @@
 <header class="header">
-    <div class="header-content">
-        <div class="logo">
-            <a href="/">Angular</a>
-        </div>
-        <nav class="nav-links">
-            <ul>
-                <li><a routerLink="/home" routerLinkActive="active">Home</a></li>
-                <li><a routerLink="/about" routerLinkActive="active">About</a></li>
-                <li><a routerLink="/settings" routerLinkActive="active">Paramètres</a></li>
-
-                <ng-container *ngIf="!isAuthenticated; else authed">
-                    <li><a routerLink="/register" routerLinkActive="active">Register</a></li>
-                    <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
-                </ng-container>
-
-                <ng-template #authed>
-                    <li *ngIf="currentUser" class="user-info">
-                        <span>Bonjour, {{ currentUser.name }}</span>
-                    </li>
-                    <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
-                    <li><a (click)="logout()">Logout</a></li>
-                </ng-template>
-            </ul>
-        </nav>
+  <div class="header-container">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <a routerLink="/" class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Angular</span>
+      </a>
     </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a routerLink="/home" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">🏠</span>
+            <span>Accueil</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/about" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">ℹ️</span>
+            <span>À propos</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/users" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">👥</span>
+            <span>Utilisateurs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/settings" routerLinkActive="active" class="nav-link">
+            <span class="nav-icon">⚙️</span>
+            <span>Paramètres</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- User Section -->
+    <div class="user-section">
+      <ng-container *ngIf="!isAuthenticated; else authenticatedUser">
+        <div class="auth-buttons">
+          <a routerLink="/login" class="btn btn-login">
+            <span class="btn-icon">🔑</span>
+            <span>Connexion</span>
+          </a>
+          <a routerLink="/register" class="btn btn-register">
+            <span class="btn-icon">✨</span>
+            <span>S'inscrire</span>
+          </a>
+        </div>
+      </ng-container>
+
+      <ng-template #authenticatedUser>
+        <div class="user-profile" *ngIf="currentUser">
+          <div class="user-avatar">
+            <span class="avatar-text">{{ currentUser.name?.charAt(0)?.toUpperCase() || 'U' }}</span>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{{ currentUser.name }}</span>
+            <span class="user-role">{{ currentUser.role || 'Utilisateur' }}</span>
+          </div>
+          <div class="user-menu">
+            <button class="menu-toggle" (click)="toggleUserMenu()">
+              <span class="menu-icon">▼</span>
+            </button>
+            <div class="dropdown-menu" [class.show]="isUserMenuOpen">
+              <a routerLink="/profile" class="dropdown-item">
+                <span class="item-icon">👤</span>
+                <span>Mon Profil</span>
+              </a>
+              <a routerLink="/settings" class="dropdown-item">
+                <span class="item-icon">⚙️</span>
+                <span>Paramètres</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <button class="dropdown-item logout-item" (click)="logout()">
+                <span class="item-icon">🚪</span>
+                <span>Déconnexion</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-toggle" (click)="toggleMobileMenu()" [class.active]="isMobileOpen">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" [class.show]="isMobileOpen">
+    <div class="mobile-nav-content">
+      <div class="mobile-user-info" *ngIf="currentUser">
+        <div class="mobile-avatar">
+          <span>{{ currentUser.name?.charAt(0)?.toUpperCase() || 'U' }}</span>
+        </div>
+        <div class="mobile-user-details">
+          <span class="mobile-user-name">{{ currentUser.name }}</span>
+          <span class="mobile-user-email">{{ currentUser.email }}</span>
+        </div>
+      </div>
+      
+      <nav class="mobile-nav-menu">
+        <a routerLink="/home" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+          <span class="mobile-nav-icon">🏠</span>
+          <span>Accueil</span>
+        </a>
+        <a routerLink="/about" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+          <span class="mobile-nav-icon">ℹ️</span>
+          <span>À propos</span>
+        </a>
+        <a routerLink="/users" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+          <span class="mobile-nav-icon">👥</span>
+          <span>Utilisateurs</span>
+        </a>
+        <a routerLink="/profile" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()" *ngIf="isAuthenticated">
+          <span class="mobile-nav-icon">👤</span>
+          <span>Mon Profil</span>
+        </a>
+        <a routerLink="/settings" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+          <span class="mobile-nav-icon">⚙️</span>
+          <span>Paramètres</span>
+        </a>
+        
+        <ng-container *ngIf="!isAuthenticated">
+          <a routerLink="/login" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+            <span class="mobile-nav-icon">🔑</span>
+            <span>Connexion</span>
+          </a>
+          <a routerLink="/register" routerLinkActive="active" class="mobile-nav-link" (click)="closeMobileMenu()">
+            <span class="mobile-nav-icon">✨</span>
+            <span>S'inscrire</span>
+          </a>
+        </ng-container>
+        
+        <button class="mobile-logout" (click)="logout(); closeMobileMenu()" *ngIf="isAuthenticated">
+          <span class="mobile-nav-icon">🚪</span>
+          <span>Déconnexion</span>
+        </button>
+      </nav>
+    </div>
+  </div>
 </header>

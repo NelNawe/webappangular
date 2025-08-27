@@ -8,6 +8,9 @@ export interface UserProfile {
     name?: string;
     email?: string;
     password?: string;
+    role?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface UpdateUserPayload {
@@ -22,6 +25,10 @@ export interface UpdateUserPayload {
 
 export class UserService {
     constructor(private http:HttpClient) {}
+
+    getAllUsers(): Observable<UserProfile[]> {
+        return this.http.get<UserProfile[]>(API_ENDPOINTS.user.all);
+    }
 
     getProfile(): Observable<UserProfile> {
         return this.http.get<UserProfile>(API_ENDPOINTS.user.profile);

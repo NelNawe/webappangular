@@ -55,9 +55,7 @@ export class AuthService {
       }));
   }
 
-  // logout(): Observable<void> {
-  //   return this.http.post<void>(API_ENDPOINTS.auth.logout, {});
-  // }
+  
 
   logout(): void {
     this.tokenService.clearToken();

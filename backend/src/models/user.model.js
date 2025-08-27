@@ -15,7 +15,15 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
       allowNull: false
+    },
+    role: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'Utilisateur'
     }
+  }, {
+    timestamps: true, // This enables createdAt and updatedAt
+    tableName: 'users'
   });
 
   return User;

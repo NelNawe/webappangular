@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { UserContextService, User } from '../../services/user-context.service';
@@ -14,10 +14,12 @@ import { Subscription } from 'rxjs';
 })
 export class Header implements OnInit, OnDestroy {
   currentUser: User | null = null;
+  isUserMenuOpen = false;
+  isMobileOpen = false;
   private userSubscription: Subscription;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private userContextService: UserContextService
   ) {
@@ -40,8 +42,39 @@ export class Header implements OnInit, OnDestroy {
     return this.authService.isAuthenticated();
   }
 
+  toggleUserMenu(): void {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileOpen = !this.isMobileOpen;
+    if (this.isMobileOpen) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileOpen = false;
+  }
+
+  closeUserMenu(): void {
+    this.isUserMenuOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    
+    // Close user menu if clicking outside
+    if (!target.closest('.user-menu')) {
+      this.isUserMenuOpen = false;
+    }
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+    this.isUserMenuOpen = false;
+    this.isMobileOpen = false;
   }
 }

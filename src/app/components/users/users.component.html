@@ -1,0 +1,50 @@
+<section class="users">
+  <h1>Gestion des Utilisateurs</h1>
+
+  <div class="card app-surface">
+    <div class="header-actions">
+      <h2>Liste des Utilisateurs</h2>
+      <button class="btn btn-primary" (click)="loadUsers()">
+        <span>Actualiser</span>
+      </button>
+    </div>
+
+    <div *ngIf="loading" class="loading">
+      <p>Chargement des utilisateurs...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="!loading && !error" class="users-list">
+      <div *ngIf="users.length === 0" class="no-users">
+        <p>Aucun utilisateur trouvé.</p>
+      </div>
+
+      <div *ngFor="let user of users" class="user-card app-surface">
+        <div class="user-info">
+          <div class="user-avatar">
+            <span class="avatar-text">{{ user.name?.charAt(0)?.toUpperCase() || 'U' }}</span>
+          </div>
+          <div class="user-details">
+            <h3>{{ user.name || 'Nom non défini' }}</h3>
+            <p class="email">{{ user.email || 'Email non défini' }}</p>
+            <p class="role">Rôle: {{ user.role || 'Utilisateur' }}</p>
+            <p class="created">Créé le: {{ formatDate(user.createdAt) }}</p>
+            <p class="id">ID: {{ user.id || 'N/A' }}</p>
+          </div>
+        </div>
+        
+        <div class="user-actions">
+          <button class="btn btn-secondary" [routerLink]="['/profile', user.id]">
+            Voir Profil
+          </button>
+          <button class="btn btn-danger" (click)="deleteUser(user.id!)">
+            Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
